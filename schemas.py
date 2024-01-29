@@ -14,6 +14,16 @@ class CreateUser(UserBase):
     class Config:
         from_attributes = True
 
+class GetUser(UserBase):
+    class Config:
+        from_attributes = True
+
+class UpdateUser(BaseModel):
+    name: str
+    email: str
+    class Config:
+        from_attributes = True
+
 class UserLogin(UserBase):
     email: str
     password: str

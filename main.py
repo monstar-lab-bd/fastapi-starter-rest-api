@@ -1,9 +1,19 @@
-from fastapi import FastAPI
-import models
+from fastapi import FastAPI, Depends
+import app.core.models.user as user
 from router import users
-from database import Base, engine  # Update this import based on your actual file structure
+from database import Base, engine, get_db
+
+from app.core.dependencies import get_user_controller
 
 app = FastAPI()
 
-models.Base.metadata.create_all(bind=engine)
-app.include_router(users.router)
+user.Base.metadata.create_all(bind=engine)
+
+user_controller = get_user_controller()
+
+
+app.include_router(users.router,
+                    tags=["API"],
+                    dependencies=[Depends(get_db),
+                    Depends(get_user_controller)])
+
